@@ -78,7 +78,8 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 .tick.t2{left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 17px);opacity:.8}
 .cover .wm{position:absolute;z-index:2;left:max(26px,calc(50% - 240px + 12px));top:calc(env(safe-area-inset-top,0px) + 38px);color:#eafffb;text-shadow:0 0 12px rgba(0,240,255,.55);animation:wmg 6s steps(1) infinite}
 @keyframes wmg{0%,90%,100%{text-shadow:0 0 12px rgba(0,240,255,.55);transform:none}91%{text-shadow:-3px 0 #ff2bd6,3px 0 #00f0ff;transform:translateX(2px)}92%{text-shadow:3px 0 #ff2bd6,-3px 0 #00f0ff;transform:translateX(-2px)}93%{text-shadow:0 0 12px rgba(0,240,255,.55);transform:none}}
-.stage{position:relative;z-index:2;width:min(100vw,520px);aspect-ratio:1688/1850;margin-top:-8vh}
+.stage{position:relative;z-index:2;width:min(100vw,520px,calc((1.227*100vh - 434px)*.9124));aspect-ratio:1688/1850;margin-top:-8vh}
+@supports(height:100dvh){.stage{width:min(100vw,520px,calc((1.227*100dvh - 434px)*.9124));margin-top:-8dvh}}
 .stage .logo{position:absolute;left:8%;top:10.5%;width:64%}
 .stage .l-m{--logo:#3dffb5;filter:drop-shadow(0 0 8px rgba(61,255,181,.85)) drop-shadow(0 0 30px rgba(0,240,255,.5));animation:bootin 1.5s steps(1) .2s both,flick 7s steps(1) 2s infinite}
 @keyframes bootin{0%{opacity:0}8%{opacity:1}14%{opacity:.1}22%{opacity:.9}30%{opacity:.2}42%{opacity:1}55%{opacity:.4}68%,100%{opacity:1}}
@@ -470,9 +471,9 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
     <div class="beam" aria-hidden="true"></div>
     <svg class="arc" viewBox="0 330 1688 1850" aria-hidden="true">
       <defs><path id="arcPath" d="M 330 2092 A 1640 1640 0 0 0 1500 400"/></defs>
-      <text class="ar a-m"><textPath href="#arcPath" id="tpM">LET’S BREAK THE ICE!</textPath></text>
-      <text class="ar a-c"><textPath href="#arcPath" id="tpC">LET’S BREAK THE ICE!</textPath></text>
-      <text class="ar a-main"><textPath href="#arcPath" id="tpA">LET’S BREAK THE ICE!</textPath></text>
+      <text class="ar a-m"><textPath href="#arcPath" id="tpM" startOffset="150">LET’S BREAK THE ICE!</textPath></text>
+      <text class="ar a-c"><textPath href="#arcPath" id="tpC" startOffset="150">LET’S BREAK THE ICE!</textPath></text>
+      <text class="ar a-main"><textPath href="#arcPath" id="tpA" startOffset="150">LET’S BREAK THE ICE!</textPath></text>
     </svg>
   </div>
   <pre class="boot" id="boot" aria-hidden="true"></pre>
