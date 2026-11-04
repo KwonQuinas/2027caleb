@@ -379,7 +379,7 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 #s-reflect .c-title,.sheet .c-title{font-family:var(--f-title);color:rgb(var(--hw));text-shadow:0 0 10px rgba(var(--n1),.55);letter-spacing:.02em}
 #s-reflect .c-q,.sheet .c-q{font-family:var(--f-title);font-size:16px;line-height:1.5;color:rgb(var(--lt))}
 .sheet .c-q{font-size:19px}
-.res .actions:not(.flat){background:linear-gradient(to top,rgba(var(--pn),.94) 42%,transparent)}
+.res .actions:not(.flat){background:linear-gradient(to top,rgba(var(--pn),.96) calc(100% - 26px),transparent)}
 .sheet{--n1:0,240,255;--n2:255,43,214;--n3:61,255,181;--hw:234,255,251;--lt:157,255,230;--pn:0,16,22;background:rgba(3,7,12,.93)}
 .sheet .circle .ring{color:rgb(var(--n3));filter:drop-shadow(0 0 8px rgba(var(--n3),.9))}
 .sheet .ring path{stroke-width:1.15;filter:none}
@@ -452,6 +452,21 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 .cy .circle.mine::before{background:radial-gradient(closest-side,rgba(var(--n3),.14),transparent)}
 .cy .circle.mine .badge{background:rgb(var(--n3));color:#04141a}
 .cy .gl{filter:drop-shadow(0 0 8px rgba(var(--n1),.7))}
+
+/* reflect — "다 나눴어요 → 다음 단계" guidance */
+.aguide{flex:0 0 100%;margin:0 0 2px;text-align:center;font:13px/1.5 'Courier New',ui-monospace,monospace;letter-spacing:.02em;color:rgb(var(--n3l));text-shadow:0 0 8px rgba(var(--n3),.6)}
+.aguide::before{content:"> ";color:rgb(var(--n1))}
+.btn.cta{font-size:18px;padding:13px 22px}
+.btn.pulse{animation:ctap 1.8s ease-in-out infinite}
+@keyframes ctap{50%{box-shadow:0 0 30px rgba(var(--n3),.95),0 0 0 5px rgba(var(--n3),.2)}}
+.sheet{overflow-y:auto;justify-content:flex-start}
+.sheet>:first-child{margin-top:auto}
+.sheet>:last-child{margin-bottom:auto}
+.sheet .term{margin:0;width:min(100%,340px);font-size:13.5px;line-height:1.6}
+.shacts{display:flex;flex-direction:column;gap:10px;align-items:stretch;width:min(100%,340px)}
+.shrow{display:flex;gap:8px;justify-content:center}
+.shrow .btn{flex:1 1 0;min-width:0;padding-left:8px;padding-right:8px;text-align:center}
+.sheet .btn.cta{width:100%}
 </style>
 </head>
 <body data-theme="NF">
@@ -503,9 +518,11 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
     <div class="term"><p>2가지만 선택해서 나눠봅시다</p></div>
     <div class="stack" id="rStack"></div>
     <div class="actions">
+      <p class="aguide" id="rGuide" style="display:none"></p>
       <button class="btn ghost" type="button" id="rRandom">랜덤으로 고르기</button>
       <button class="btn ghost" type="button" id="rClear">다시 고르기</button>
       <button class="btn primary" type="button" id="rGo" disabled>나눔 시작</button>
+      <button class="btn primary cta pulse" type="button" id="rNext" style="display:none">다음 단계로 ▶</button>
     </div>
   </div>
 </section>
@@ -588,9 +605,14 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="선택한 질문">
   <div class="count" id="shCount"></div>
   <div id="shBody"></div>
-  <div class="actions flat" style="margin:0">
-    <button class="btn ghost" type="button" id="shClose">닫기</button>
-    <button class="btn primary" type="button" id="shNext">다음 질문</button>
+  <div class="term shnote" id="shNote"></div>
+  <div class="shacts">
+    <button class="btn primary cta" type="button" id="shDone" style="display:none">다 나눴어요 · 다음 단계로 ▶</button>
+    <div class="shrow">
+      <button class="btn ghost" type="button" id="shPrev" style="display:none">‹ 이전 질문</button>
+      <button class="btn ghost" type="button" id="shClose">닫기</button>
+      <button class="btn primary" type="button" id="shNext">다음 질문 ▶</button>
+    </div>
   </div>
 </div>
 
@@ -679,12 +701,13 @@ function buildReflect(){
   $('#rStack').innerHTML=REFLECT.map(function(_,i){return reflectCircle(i)}).join('');
   $$('#rStack .circle').forEach(function(el){el.addEventListener('click',function(){pickReflect(+el.getAttribute('data-r'),el)})});
 }
+var rDone=false;
 function pickReflect(i,el){
   var k=S.reflect.indexOf(i);
   if(k>=0){S.reflect.splice(k,1)}
   else if(S.reflect.length<2){S.reflect.push(i)}
   else{toast('2개를 모두 골랐어요. 하나를 눌러 해제한 뒤 바꿔 주세요.');el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');return}
-  save();renderReflect();
+  rDone=false;save();renderReflect();
 }
 function renderReflect(){
   var full=S.reflect.length===2;
@@ -693,23 +716,36 @@ function renderReflect(){
     el.classList.toggle('sel',on);el.classList.toggle('dim',full&&!on);el.setAttribute('aria-pressed',on?'true':'false');
   });
   var c=$('#rCount');c.textContent=S.reflect.length+' / 2';c.classList.toggle('full',full);
-  $('#rGo').disabled=!full;$('#rClear').style.display=S.reflect.length?'':'none';
+  var done=full&&rDone,g=$('#rGo'),gd=$('#rGuide');
+  g.disabled=!full;g.textContent=done?'다시 보기':'나눔 시작';g.classList.toggle('primary',!done);g.classList.toggle('ghost',done);
+  $('#rNext').style.display=done?'':'none';
+  $('#rRandom').style.display=done?'none':'';
+  $('#rClear').style.display=(S.reflect.length&&!done)?'':'none';
+  gd.style.display=full?'':'none';
+  gd.textContent=done?'다 나눴다면 다음 단계로 넘어가요':'선택 완료! ‘나눔 시작’을 눌러 질문을 나눠요';
 }
-$('#rClear').addEventListener('click',function(){S.reflect=[];save();renderReflect()});
+$('#rClear').addEventListener('click',function(){S.reflect=[];rDone=false;save();renderReflect()});
 $('#rRandom').addEventListener('click',function(){
   var a=[0,1,2,3];for(var i=3;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}
-  S.reflect=a.slice(0,2);save();renderReflect();toast('운명이 고른 두 가지예요.');
+  S.reflect=a.slice(0,2);rDone=false;save();renderReflect();toast('운명이 고른 두 가지예요.');
 });
 var shIdx=0;
 function showSheet(){
-  var i=S.reflect[shIdx];
-  $('#shCount').textContent=(shIdx+1)+' / '+S.reflect.length;
+  var n=S.reflect.length,last=shIdx>=n-1,i=S.reflect[shIdx];
+  $('#shCount').textContent=(shIdx+1)+' / '+n;
   $('#shBody').innerHTML=reflectCircle(i).replace('class="circle"','class="circle sel" style="pointer-events:none"');
-  $('#shNext').textContent=shIdx<S.reflect.length-1?'다음 질문':'처음 질문';
+  $('#shNote').innerHTML=last?'<p>모두 나눴다면 다음 단계로 넘어가요</p><p>다음은 DISCOVER · 성향 검사예요</p>':'<p>이야기를 다 나눴다면</p><p>‘다음 질문’을 눌러 주세요</p>';
+  $('#shNext').style.display=last?'none':'';
+  $('#shDone').style.display=last?'':'none';
+  $('#shPrev').style.display=shIdx>0?'':'none';
+  if(last&&!rDone){rDone=true;renderReflect()}
 }
-$('#rGo').addEventListener('click',function(){shIdx=0;showSheet();$('#sheet').classList.add('on')});
-$('#shNext').addEventListener('click',function(){shIdx=(shIdx+1)%S.reflect.length;showSheet()});
+$('#rGo').addEventListener('click',function(){shIdx=0;showSheet();$('#sheet').classList.add('on');$('#sheet').scrollTop=0});
+$('#shNext').addEventListener('click',function(){shIdx=Math.min(shIdx+1,S.reflect.length-1);showSheet()});
+$('#shPrev').addEventListener('click',function(){shIdx=Math.max(0,shIdx-1);showSheet()});
 $('#shClose').addEventListener('click',function(){$('#sheet').classList.remove('on')});
+$('#shDone').addEventListener('click',function(){$('#sheet').classList.remove('on');go('check')});
+$('#rNext').addEventListener('click',function(){go('check')});
 
 /* ---------- check (quiz) ---------- */
 /* Each axis: 6 base items (+3 reserve items used only when the base result is a 3:3 tie).
