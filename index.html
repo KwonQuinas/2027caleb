@@ -521,6 +521,7 @@ body.ibig .screen.on>.wrap{animation:ibig .72s linear}
 .gnx{background:linear-gradient(to top,rgba(var(--pn),.97) calc(100% - 26px),transparent);gap:6px}
 .gnx .btn.cta{min-width:min(100%,300px);font-size:19px;padding:15px 24px;letter-spacing:.04em;font-weight:700;box-shadow:0 0 22px rgba(var(--n3),.75),0 0 0 2px rgba(var(--n3),.25)}
 .gnx .aguide{margin-bottom:4px}
+.rtn{margin-top:4px;padding-top:26px}
 </style>
 </head>
 <body data-theme="NF">
@@ -1076,9 +1077,9 @@ function renderResult(){
   });
   h+='</div>';
   var ctl=S.revealed
-    ?'<div class="codebox"><small>TYPE</small><b id="codeBig" data-l="'+code()+'">'+code().replace(/./g,'?')+'</b></div><div class="actions flat" style="margin-top:14px"><button type="button" class="btn ghost" id="hideBtn">다시 가리기</button><button type="button" class="btn primary" id="toGifted">GIFTED 보기 ▶</button></div>'
+    ?'<div class="codebox"><small>TYPE</small><b id="codeBig" data-l="'+code()+'">'+code().replace(/./g,'?')+'</b></div>'+summaryHTML()+'<div class="actions rtn"><button type="button" class="btn ghost" id="hideBtn">다시 가리기</button><button type="button" class="btn primary" id="toGifted">GIFTED 보기 ▶</button></div>'
     :'<button type="button" class="hold" id="hold" aria-label="길게 눌러 결과 확인"><svg viewBox="0 0 132 132" aria-hidden="true"><circle class="track" cx="66" cy="66" r="59"/><circle class="prog" cx="66" cy="66" r="59"/></svg><span>꾹 눌러서<br>결과 확인<small>HOLD TO DECRYPT</small></span></button>';
-  body.innerHTML=ctl+h+(S.revealed?summaryHTML():'');
+  body.innerHTML=ctl+h;
   if(S.revealed){
     var big=$('#codeBig'),fin=big.getAttribute('data-l'),t0=performance.now(),iv;
     if(RM)big.textContent=fin;
