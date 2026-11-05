@@ -1259,7 +1259,7 @@ var UQ={
   3:{name:'마음 나눔과 기도',q:['요즘 내 마음 날씨는?','올해 하나님께 가장 묻고 싶었던 질문','요즘 내려놓고 싶은 짐 하나','2027년에 하나님께 구하고 싶은 것 한 가지','이 모임에서 내가 받고 싶은 것, 줄 수 있는 것','함께 기도받고 싶은 한 가지','오늘 순원들의 이야기 중 마음에 남은 한 가지']}
 };
 var NEED=3,CLOSING='옆 사람을 위한 한 문장 축복으로 마무리해요';
-function newU(){return {lv:1,cur:{1:null,2:null,3:null},bag:{1:[],2:[],3:[]},n:{1:0,2:0,3:0},un2:false,open3:false}}
+function newU(){return {lv:1,cur:{1:null,2:null,3:null},bag:{1:[],2:[],3:[]},n:{1:0,2:0,3:0},un2:false,open3:false,ann3:false}}
 var U=newU();
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
 function uPick(lv){
@@ -1347,9 +1347,10 @@ function enRender(fresh){
   if(fresh)enMorph(title);else title.textContent='ENFOLD';
   var done=U.n[3]>=NEED;
   h='<div class="ld">'+ladderHTML({1:'done',2:'done',3:'on'},false)+cardHTML(3,'e')+'</div>'+drawBtns(3,'','e');
-  if(!done)h+='<p class="qnote">// 질문 3개를 나누면 마무리 카드가 나와요</p>';
-  else h+='<div class="qcard cl"><div class="qh"><span>CLOSING</span><span>✓</span></div><div class="qt" id="qcl">'+CLOSING+'</div></div><div class="qa"><button type="button" class="btn primary" id="eEnd">얼음 깨기 ▶</button></div>';
+  if(!done)h+='<p class="qnote">// 질문 3개를 나누면 얼음 깨기로 넘어갈 수 있어요</p>';
+  else h+='<div class="qcard cl"><div class="qh"><span>CLOSING</span><span>✓</span></div><div class="qt" id="qcl">'+CLOSING+'</div></div><div class="actions gnx"><p class="aguide">3 / 3 완료 · 다음 단계 ICE BREAK</p><button type="button" class="btn primary cta pulse" id="eEnd">얼음 깨기 ▶</button></div>';
   body.innerHTML=h;
+  if(done&&!U.ann3){U.ann3=true;vib([20,30,20])}
   qDrawBind(3,enRender,'e');
   var eb=$('#eEnd');if(eb)eb.addEventListener('click',function(){go('game')});
 }
