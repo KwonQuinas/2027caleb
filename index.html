@@ -105,7 +105,8 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 .boot .cur::after{content:"█";margin-left:3px;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 .start{position:absolute;z-index:4;bottom:calc(env(safe-area-inset-bottom,0px) + 44px);left:50%;transform:translateX(-50%);font-family:var(--f-geo);font-weight:700;font-size:15px;letter-spacing:.14em;padding:13px 26px;white-space:nowrap;border-radius:4px;border:1.5px solid #00f0ff;color:#bffcff;background:rgba(0,20,28,.55);text-shadow:0 0 8px rgba(0,240,255,.8);box-shadow:0 0 14px rgba(0,240,255,.35),inset 0 0 14px rgba(0,240,255,.15);opacity:.28;transition:opacity .5s}
-.cover.ready .start{opacity:1;animation:pulseN 1.8s ease-in-out infinite}
+.cover.ready .start{opacity:1;animation:pulseN 1.8s ease-in-out infinite;cursor:pointer}
+.cover:not(.ready) .start{cursor:progress}
 @keyframes pulseN{50%{box-shadow:0 0 28px rgba(0,240,255,.75),inset 0 0 18px rgba(0,240,255,.3)}}
 .scan{position:absolute;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.28) 0 1px,transparent 1px 3px);opacity:.5;mix-blend-mode:multiply;overflow:hidden}
 .scan::after{content:"";position:absolute;left:0;right:0;top:-25%;height:25%;background:linear-gradient(to bottom,transparent,rgba(0,240,255,.22),transparent);animation:roll 5.5s linear infinite}
@@ -546,7 +547,7 @@ body.ibig .screen.on>.wrap{animation:ibig .72s linear}
     </svg>
   </div>
   <pre class="boot" id="boot" aria-hidden="true"></pre>
-  <button class="start" type="button" id="startBtn">▶ ENTER · 탭해서 시작</button>
+  <button class="start" type="button" id="startBtn" aria-disabled="true">▶ ENTER · 탭해서 시작</button>
   <div class="scan" aria-hidden="true"></div>
   <div class="flash" id="flash" aria-hidden="true"></div>
 </section>
@@ -1187,20 +1188,20 @@ function cvScramble(){
 function cvBar(p){var n=Math.round(p/10);return '> BREAKING ICE ['+new Array(n+1).join('█')+new Array(11-n).join('·')+'] '+('00'+p).slice(-3)+'%'}
 function cvBoot(){
   var el=$('#boot'),cover=$('#s-cover'),lines=['','','',''];
-  cover.classList.remove('ready');
+  cover.classList.remove('ready');$('#startBtn').setAttribute('aria-disabled','true');
   function paint(active){el.innerHTML=lines.map(function(s,i){return '<span class="'+(i===active?'cur':'')+(i===3&&s?' ok':'')+'">'+esc(s)+'</span>'}).join('')}
   function type(i,txt,speed,next){var k=0;(function step(){lines[i]=txt.slice(0,++k);paint(i);if(k<txt.length)cvTimer(step,speed);else if(next)cvTimer(next,200)})()}
   function finish(){
     var f=$('#flash'),st=$('#stage');
     f.classList.remove('go');st.classList.remove('jolt');void f.offsetWidth;f.classList.add('go');st.classList.add('jolt');
-    cover.classList.add('ready');paint(3);
+    cover.classList.add('ready');$('#startBtn').setAttribute('aria-disabled','false');paint(3);
     try{navigator.vibrate&&navigator.vibrate(40)}catch(e){}
   }
   function progress(){
     var p=0;(function step(){p=Math.min(100,p+3+Math.floor(Math.random()*9));lines[2]=cvBar(p);paint(2);
       if(p<100)cvTimer(step,70);else cvTimer(function(){type(3,BOOT3,34,finish)},220)})();
   }
-  if(RM){lines=[BOOT0,BOOT1,cvBar(100),BOOT3];paint(3);cover.classList.add('ready');return}
+  if(RM){lines=[BOOT0,BOOT1,cvBar(100),BOOT3];paint(3);cover.classList.add('ready');$('#startBtn').setAttribute('aria-disabled','false');return}
   cvTimer(function(){type(0,BOOT0,18,function(){type(1,BOOT1,22,progress)})},350);
 }
 var FXP=['#ff2bd6','#00f0ff','#3dffb5'];
@@ -1836,7 +1837,10 @@ function go(name,fromHash){
 }
 $('#prev').addEventListener('click',function(){go(ORDER[Math.max(0,ORDER.indexOf(cur)-1)])});
 $('#next').addEventListener('click',function(){go(ORDER[Math.min(ORDER.length-1,ORDER.indexOf(cur)+1)])});
-$('#s-cover').addEventListener('click',function(){go('unfold')});
+$('#startBtn').addEventListener('click',function(){
+  if(!$('#s-cover').classList.contains('ready')){toast('로딩이 끝나면 시작할 수 있어요');return}
+  go('unfold');
+});
 $('#eHome').addEventListener('click',function(){go('cover')});
 $('#gNext').addEventListener('click',function(){go('enfold')});
 $('#eReset').addEventListener('click',function(){S={reflect:[],ans:{},id:[null,null,null,null],ov:[false,false,false,false],revealed:false,group:'NF'};U=newU();save();toast('선택을 모두 지웠어요.');go('cover')});
@@ -1845,7 +1849,7 @@ window.addEventListener('hashchange',function(){var n=location.hash.replace('#',
 /* swipe */
 (function(){
   var x0=0,y0=0,t0=0,on=false;
-  document.addEventListener('touchstart',function(e){if(e.touches.length!==1||$('#sheet').classList.contains('on')){on=false;return}var t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now();on=!e.target.closest('.hold')&&!(cur==='check'&&(Q.stage==='q'||Q.stage==='inter'))},{passive:true});
+  document.addEventListener('touchstart',function(e){if(e.touches.length!==1||$('#sheet').classList.contains('on')){on=false;return}var t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now();on=cur!=='cover'&&!e.target.closest('.hold')&&!(cur==='check'&&(Q.stage==='q'||Q.stage==='inter'))},{passive:true});
   document.addEventListener('touchend',function(e){
     if(!on)return;var t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;
     if(Math.abs(dx)>90&&Math.abs(dy)<45&&Date.now()-t0<600){var i=ORDER.indexOf(cur);if(dx<0&&i<ORDER.length-1)go(ORDER[i+1]);else if(dx>0&&i>0)go(ORDER[i-1])}
