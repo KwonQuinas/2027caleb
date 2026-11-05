@@ -1464,6 +1464,14 @@ var SND=(function(){
       tone(t+.045,'sine',2600+p*1700,3300+p*2000,.13,.18,.003);
       tone(t,'triangle',420+p*160,300,.14,.22,.004);
     },
+    /* a fallen chunk snaps back onto the ice */
+    reform:function(){
+      if(!ok())return;var t=ac.currentTime;
+      tone(t,'sine',110,340,.22,.62,.004);
+      tone(t,'triangle',220,680,.18,.3,.004);
+      noise(t,.16,'bandpass',1800,6500,1.8,.55,.004);
+      for(var i=0;i<4;i++)tone(t+.05+i*.04,'sine',2200+i*520,0,.12,.14,.002);
+    },
     /* hold-to-decrypt: a pull-in charge that tightens the longer you hold. returns end(win[,at]) */
     charge:function(dur){
       if(!ok())return null;
@@ -1651,7 +1659,7 @@ var GM=(function(){
   }
   function fresh(){
     var b=build();
-    return {hp:100,taps:0,combo:0,maxc:0,last:0,t0:0,t1:0,done:false,chunks:0,cr:[],fr:[],fzv:0,frz:false,fzs:0,dirty:false,sq:0,shx:0,shy:0,rot:0,rip:[],pulse:0,burst:0,sh:b.sh,r:b.r,off:b.off};
+    return {hp:100,taps:0,combo:0,maxc:0,last:0,t0:0,t1:0,done:false,chunks:0,cr:[],fr:[],det:{},fzv:0,frz:false,fzs:0,dirty:false,sq:0,shx:0,shy:0,rot:0,rip:[],pulse:0,burst:0,sh:b.sh,r:b.r,off:b.off};
   }
   st=fresh();
 
@@ -1717,9 +1725,10 @@ var GM=(function(){
       gx.save();
       var sq=1-.05*s.sq;gx.translate(CX+s.shx,CY+s.shy);gx.rotate(s.rot);gx.scale(sq,sq);gx.translate(-CX,-CY);
       s.sh.forEach(function(q){
-        if(q.gone)return;gx.beginPath();polyPath(gx,q.p);
-        gx.fillStyle='rgba('+pal[0]+','+(.07+.15*q.lum)+')';gx.fill();
-        gx.fillStyle='rgba(255,255,255,'+(.02+.11*q.lum*q.lum)+')';gx.fill();
+        if(q.gone)return;var ra=q.rt?Math.min(1,(now-q.rt)/320):1;gx.beginPath();polyPath(gx,q.p);
+        gx.fillStyle='rgba('+pal[0]+','+((.07+.15*q.lum)*ra)+')';gx.fill();
+        gx.fillStyle='rgba(255,255,255,'+((.02+.11*q.lum*q.lum)*ra)+')';gx.fill();
+        if(ra>=1)q.rt=0;
       });
       /* cracks + shimmer clipped to the remaining ice */
       gx.save();allPath(gx);gx.clip();
@@ -1787,13 +1796,21 @@ var GM=(function(){
     var s=st;if(s.frz===on)return;s.frz=on;
     $('#gmHud').classList.toggle('frz',on);$('#gmMsg').classList.toggle('frz',on);
   }
+  function reform(k,now){
+    var s=st,list=s.det[k]||[],rect=arena.getBoundingClientRect(),k2=rect.width/400,mx=0,my=0;
+    list.forEach(function(q){q.gone=false;q.rt=now;mx+=q.cx;my+=q.cy;s.fr.push({x:q.cx,y:q.cy,t0:now})});
+    delete s.det[k];
+    if(list.length){var sp=[rect.left+mx/list.length*k2,rect.top+my/list.length*k2];ICE.ring(sp[0],sp[1],110,0,'225,252,255',2.2)}
+    SND.reform();vib(14);s.sq=.5;s.pulse=Math.max(s.pulse,.6);
+  }
   function regen(dt,now){
     var s=st;if(s.done||!s.taps||!s.last)return;
-    var idle=(now-s.last)/1000,cap=100-25*s.chunks,tgt=0;
+    var idle=(now-s.last)/1000,cap=100,tgt=0;
     if(idle>GRACE&&s.hp<cap){
       var rate=RATE0+(RATE1-RATE0)*Math.min(1,(idle-GRACE)/RAMP);
       s.hp=Math.min(cap,s.hp+rate*dt);tgt=1;
       var healed=false;
+      while(s.chunks>0&&s.hp>100-25*s.chunks){var kk=s.chunks;s.chunks--;reform(kk,now)}
       while(s.cr.length&&s.cr[s.cr.length-1].hp0<s.hp){var c=s.cr.pop();s.fr.push({x:c.x,y:c.y,t0:now});healed=true}
       if(healed){s.dirty=true;if(s.fr.length>40)s.fr.splice(0,s.fr.length-40)}
       if(now-s.fzs>270){s.fzs=now;SND.freeze(s.hp/100)}
@@ -1838,13 +1855,14 @@ var GM=(function(){
   function detach(k){
     var s=st,rect=arena.getBoundingClientRect(),i0=(s.off+k*4+Math.floor(s.r()*2))%N,t=0;
     while((s.sh[i0].gone||s.sh[(i0+1)%N].gone)&&t++<N)i0=(i0+1)%N;
-    var pick=[s.sh[i0],s.sh[(i0+1)%N],s.sh[N+i0]],list=[],k2=rect.width/400,ox=rect.left+CX*k2,oy=rect.top+CY*k2,mx=0,my=0;
+    var pick=[s.sh[i0],s.sh[(i0+1)%N],s.sh[N+i0]],list=[],dl=[],k2=rect.width/400,ox=rect.left+CX*k2,oy=rect.top+CY*k2,mx=0,my=0;
     pick.forEach(function(q){
-      if(q.gone)return;q.gone=true;
-      var c=scr([q.cx,q.cy],rect),dx=c[0]-ox,dy=c[1]-oy,dl=Math.hypot(dx,dy)||1,sp=150+Math.random()*130;
+      if(q.gone)return;q.gone=true;dl.push(q);
+      var c=scr([q.cx,q.cy],rect),dx=c[0]-ox,dy=c[1]-oy,dd=Math.hypot(dx,dy)||1,sp=150+Math.random()*130;
       mx+=c[0];my+=c[1];
-      list.push({pts:q.p.map(function(p){return scr(p,rect)}),vx:dx/dl*sp,vy:dy/dl*sp-150,vr:(Math.random()-.5)*8,g:1050,life:1.05+Math.random()*.4,col:pal[0]});
+      list.push({pts:q.p.map(function(p){return scr(p,rect)}),vx:dx/dd*sp,vy:dy/dd*sp-150,vr:(Math.random()-.5)*8,g:1050,life:1.05+Math.random()*.4,col:pal[0]});
     });
+    s.det[k]=dl;
     if(list.length){ICE.shards(list);ICE.chips(mx/list.length,my/list.length,14,1.1)}
     ICE.jolt('ijolt',320);SND.chunk();vib([30,20,40]);
     s.sq=1.6;s.shx=(Math.random()-.5)*14;s.shy=(Math.random()-.5)*14;s.rot=(Math.random()-.5)*.08;s.pulse=1;
