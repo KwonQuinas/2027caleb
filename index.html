@@ -209,10 +209,10 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 /* result: cyberpunk decrypt — neutral neon while locked, group neon once decrypted */
 .screen.res,.screen.cy{--n1:0,240,255;--n2:255,43,214;--n3:61,255,181;--n2l:255,123,233;--n3l:125,255,224;--hw:234,255,251;--lt:157,255,230;--pn:0,16,22;--ba:#04080f;--bb:#07202a;--bc:#0a2f35;
   background:radial-gradient(90% 40% at 50% 10%,rgba(var(--n3),.14),transparent 66%),radial-gradient(70% 36% at 8% 92%,rgba(var(--n2),.13),transparent 70%),linear-gradient(180deg,var(--ba) 0%,var(--bb) 60%,var(--bc) 100%)}
-.screen.res[data-g="NF"],body[data-theme="NF"] .screen.cy.gifted{--n1:52,255,160;--n2:0,205,215;--n3:150,255,110;--n2l:110,240,235;--n3l:190,255,160;--hw:236,255,243;--lt:170,255,205;--pn:0,20,12;--ba:#030c08;--bb:#07241a;--bc:#0b3a2a}
-.screen.res[data-g="SJ"],body[data-theme="SJ"] .screen.cy.gifted{--n1:47,155,255;--n2:125,110,255;--n3:90,215,255;--n2l:170,160,255;--n3l:150,225,255;--hw:236,246,255;--lt:160,208,255;--pn:2,10,26;--ba:#040810;--bb:#0a1a34;--bc:#0d2c52}
-.screen.res[data-g="SP"],body[data-theme="SP"] .screen.cy.gifted{--n1:255,184,31;--n2:255,98,40;--n3:255,214,90;--n2l:255,150,100;--n3l:255,224,130;--hw:255,247,232;--lt:255,214,150;--pn:24,12,2;--ba:#0c0803;--bb:#231605;--bc:#3a2508}
-.screen.res[data-g="NT"],body[data-theme="NT"] .screen.cy.gifted{--n1:255,123,233;--n2:160,106,255;--n3:255,170,245;--n2l:195,160,255;--n3l:255,196,246;--hw:255,240,253;--lt:245,190,255;--pn:20,6,28;--ba:#0b0412;--bb:#1d0e2b;--bc:#321746}
+.screen.res[data-g="NF"],.res .xp[data-g="NF"],body[data-theme="NF"] .screen.cy.gifted{--n1:52,255,160;--n2:0,205,215;--n3:150,255,110;--n2l:110,240,235;--n3l:190,255,160;--hw:236,255,243;--lt:170,255,205;--pn:0,20,12;--ba:#030c08;--bb:#07241a;--bc:#0b3a2a}
+.screen.res[data-g="SJ"],.res .xp[data-g="SJ"],body[data-theme="SJ"] .screen.cy.gifted{--n1:47,155,255;--n2:125,110,255;--n3:90,215,255;--n2l:170,160,255;--n3l:150,225,255;--hw:236,246,255;--lt:160,208,255;--pn:2,10,26;--ba:#040810;--bb:#0a1a34;--bc:#0d2c52}
+.screen.res[data-g="SP"],.res .xp[data-g="SP"],body[data-theme="SP"] .screen.cy.gifted{--n1:255,184,31;--n2:255,98,40;--n3:255,214,90;--n2l:255,150,100;--n3l:255,224,130;--hw:255,247,232;--lt:255,214,150;--pn:24,12,2;--ba:#0c0803;--bb:#231605;--bc:#3a2508}
+.screen.res[data-g="NT"],.res .xp[data-g="NT"],body[data-theme="NT"] .screen.cy.gifted{--n1:255,123,233;--n2:160,106,255;--n3:255,170,245;--n2l:195,160,255;--n3l:255,196,246;--hw:255,240,253;--lt:245,190,255;--pn:20,6,28;--ba:#0b0412;--bb:#1d0e2b;--bc:#321746}
 @keyframes wmr{0%,90%,100%{text-shadow:0 0 12px rgba(var(--n1),.55);transform:none}91%{text-shadow:-3px 0 rgb(var(--n2)),3px 0 rgb(var(--n1));transform:translateX(2px)}92%{text-shadow:3px 0 rgb(var(--n2)),-3px 0 rgb(var(--n1));transform:translateX(-2px)}93%{text-shadow:0 0 12px rgba(var(--n1),.55);transform:none}}
 .res .r-fx,.cy .r-fx{position:fixed;inset:0;width:100%;height:100%;opacity:.32;pointer-events:none}
 .res .r-scan,.cy .r-scan{position:fixed;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,.26) 0 1px,transparent 1px 3px);opacity:.45;mix-blend-mode:multiply}
@@ -522,6 +522,19 @@ body.ibig .screen.on>.wrap{animation:ibig .72s linear}
 .gnx .btn.cta{min-width:min(100%,300px);font-size:19px;padding:15px 24px;letter-spacing:.04em;font-weight:700;box-shadow:0 0 22px rgba(var(--n3),.75),0 0 0 2px rgba(var(--n3),.25)}
 .gnx .aguide{margin-bottom:4px}
 .rtn{margin-top:4px;padding-top:26px}
+.res .sum.xp{margin-top:14px;padding:16px 14px 14px}
+.res .xp .sum-t{text-align:center;margin-bottom:10px}
+.xp .xtabs{display:flex;gap:6px;justify-content:center;margin:0 0 12px}
+.xp .xt{flex:1;font:700 13px 'Orbitron',sans-serif;letter-spacing:.14em;padding:9px 0;border-radius:3px;border:1px solid rgba(var(--n1),.5);color:rgb(var(--lt));background:rgba(var(--pn),.55)}
+.xp .xt[aria-selected="true"]{background:rgb(var(--n3));border-color:rgb(var(--n3));color:#04141a;box-shadow:0 0 14px rgba(var(--n3),.55)}
+.xp .xchips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.xp .xtabs{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 74px)}
+.xp .xc{position:relative;min-height:46px;font:800 13px 'Orbitron',sans-serif;letter-spacing:.04em;padding:0;border-radius:3px;border:1px solid rgba(var(--n1),.45);color:rgb(var(--lt));background:rgba(var(--pn),.5)}
+.xp .xc[aria-pressed="true"]{background:rgba(var(--n1),.24);border-color:rgb(var(--n3));color:rgb(var(--hw));box-shadow:0 0 12px rgba(var(--n3),.5),inset 0 0 10px rgba(var(--n1),.2)}
+.xp .xc.me::after{content:'나';position:absolute;top:-8px;right:-3px;font:700 11px/1 'Do Hyeon','Gaegu',sans-serif;letter-spacing:0;background:rgb(var(--n3));color:#04141a;border-radius:9px;padding:2px 6px}
+.xp .xh{margin:16px 0 2px;text-align:center;font:600 12.5px 'Orbitron',sans-serif;letter-spacing:.24em;color:rgb(var(--n3l))}
+.xp .xhint{margin:14px 0 4px;text-align:center}
+.xp .traitl li{animation-delay:calc(var(--i)*.05s)}
 .gm-hud.frz .gh-bar i{border-color:#d9ffff;box-shadow:0 0 10px rgba(190,250,255,.8)}
 .gm-hud.frz .gh-bar u{background:linear-gradient(90deg,#8fdcff,#fff);box-shadow:0 0 12px rgba(200,250,255,.95)}
 .gm-hud.frz .gh-bar b{color:#fff;animation:gfz .45s steps(2) infinite}
@@ -1049,6 +1062,31 @@ function traitsHTML(){
   var ty=code(),l=TRAITS[ty];if(!l)return '';
   return '<div class="sum trait"><p class="sum-t">성격 특징 · '+esc(ty)+'</p><ul class="traitl">'+l.map(function(t,i){return '<li style="--i:'+i+'">'+esc(t)+'</li>'}).join('')+'</ul></div>';
 }
+var X={g:'NF',t:null};
+function xpInner(){
+  var mine=code(),h='<p class="sum-t">OTHER TYPES · 다른 유형 보기</p><div class="xtabs" role="tablist">';
+  GORDER.forEach(function(g){h+='<button type="button" role="tab" class="xt" data-xg="'+g+'" aria-selected="'+(X.g===g)+'">'+g+'</button>'});
+  h+='</div><div class="xchips" id="xChips">';
+  GROUPS[X.g].forEach(function(ty){h+='<button type="button" class="xc'+(ty===mine?' me':'')+'" data-xt="'+ty+'" aria-pressed="'+(X.t===ty)+'">'+ty+'</button>'});
+  h+='</div>';
+  if(X.t&&TRAITS[X.t])h+='<p class="xh">성격 특징 · '+esc(X.t)+'</p><ul class="traitl">'+TRAITS[X.t].map(function(t,i){return '<li style="--i:'+i+'">'+esc(t)+'</li>'}).join('')+'</ul>';
+  else h+='<p class="sum-n xhint">궁금한 유형을 눌러 보세요</p>';
+  return h;
+}
+function xpHTML(){X={g:groupOf(code()),t:null};return '<div class="sum xp" id="xp" data-g="'+X.g+'">'+xpInner()+'</div>'}
+function xpBind(){
+  var xp=$('#xp');if(!xp)return;
+  xp.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('button'):null;if(!b||!xp.contains(b))return;
+    var g=b.getAttribute('data-xg'),t=b.getAttribute('data-xt'),sel;
+    if(g){if(g===X.g)return;X.g=g;X.t=null;xp.setAttribute('data-g',g);sel='[data-xg="'+g+'"]'}
+    else if(t){X.t=(X.t===t)?null:t;sel='[data-xt="'+t+'"]'}
+    else return;
+    SND.click();xp.innerHTML=xpInner();
+    var nb=xp.querySelector(sel);if(nb)try{nb.focus({preventScroll:true})}catch(x){}
+    if(X.t){var c=xp.querySelector('.xtabs');if(c)c.scrollIntoView({block:'start',behavior:RM?'auto':'smooth'})}
+  });
+}
 function summaryHTML(){
   var an=[0,1,2,3].map(analyze);
   return '<div class="sum"><p class="sum-t">SIGNAL ANALYSIS · 응답 분포</p>'+an.map(function(a,i){
@@ -1094,7 +1132,7 @@ function renderResult(){
   });
   h+='</div>';
   var ctl=S.revealed
-    ?'<div class="codebox"><small>TYPE</small><b id="codeBig" data-l="'+code()+'">'+code().replace(/./g,'?')+'</b></div>'+summaryHTML()+traitsHTML()+'<div class="actions rtn"><button type="button" class="btn ghost" id="hideBtn">다시 가리기</button><button type="button" class="btn primary" id="toGifted">GIFTED 보기 ▶</button></div>'
+    ?'<div class="codebox"><small>TYPE</small><b id="codeBig" data-l="'+code()+'">'+code().replace(/./g,'?')+'</b></div>'+summaryHTML()+traitsHTML()+xpHTML()+'<div class="actions rtn"><button type="button" class="btn ghost" id="hideBtn">다시 가리기</button><button type="button" class="btn primary" id="toGifted">GIFTED 보기 ▶</button></div>'
     :'<button type="button" class="hold" id="hold" aria-label="길게 눌러 결과 확인"><svg viewBox="0 0 132 132" aria-hidden="true"><circle class="track" cx="66" cy="66" r="59"/><circle class="prog" cx="66" cy="66" r="59"/></svg><span>꾹 눌러서<br>결과 확인<small>HOLD TO DECRYPT</small></span></button>';
   body.innerHTML=ctl+h;
   if(S.revealed){
@@ -1102,6 +1140,7 @@ function renderResult(){
     if(RM)big.textContent=fin;
     else{iv=setInterval(function(){var el=performance.now()-t0,out='',k;for(k=0;k<fin.length;k++)out+=(el>=300+k*160)?fin.charAt(k):rsRand();big.textContent=out;if(el>=300+fin.length*160)clearInterval(iv)},45);RS.ivs.push(iv)}
     rsDecode(rsLetters(),250);
+    xpBind();
     $('#hideBtn').addEventListener('click',function(){S.revealed=false;renderResult()});
     $('#toGifted').addEventListener('click',function(){S.group=groupOf(code());save();go('gifted')});
     requestAnimationFrame(function(){requestAnimationFrame(function(){var s2=$('#resStack');if(s2)s2.classList.add('revealed')})});
