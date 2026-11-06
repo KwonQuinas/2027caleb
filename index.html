@@ -415,6 +415,39 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 .sheet .btn.primary{background:rgb(var(--n3));border-color:rgb(var(--n3));color:#04141a;text-shadow:none;box-shadow:0 0 16px rgba(var(--n3),.5)}
 .sheet .btn.ghost{border-color:rgba(var(--n1),.4);color:rgb(var(--lt));background:transparent;box-shadow:none}
 .r-title.xt{font-size:34px}
+/* ---- 마지막 화면: 얼음이 녹아내리며 따스한 햇빛이 떠오르는 라이징 선 ---- */
+.sunfx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.sunfx>*{position:absolute;display:block;opacity:0}
+.sx-sky{inset:0;background:radial-gradient(120% 78% at 50% 100%,rgba(255,228,152,.96) 0%,rgba(255,172,82,.72) 26%,rgba(255,106,80,.4) 50%,rgba(150,42,92,.16) 72%,transparent 92%),linear-gradient(to top,rgba(255,150,70,.42),rgba(255,112,100,.16) 55%,transparent 88%)}
+.sx-rays{left:50%;top:90%;width:210vmax;height:210vmax;margin:-105vmax 0 0 -105vmax;background:repeating-conic-gradient(from 0deg,rgba(255,226,150,.34) 0 2.6deg,transparent 2.6deg 8.4deg);-webkit-mask-image:radial-gradient(closest-side,#000 0,rgba(0,0,0,.7) 24%,transparent 74%);mask-image:radial-gradient(closest-side,#000 0,rgba(0,0,0,.7) 24%,transparent 74%);will-change:transform,opacity}
+.sx-disc{left:50%;top:90%;width:min(118vw,640px);aspect-ratio:1;margin:calc(min(118vw,640px)/-2) 0 0 calc(min(118vw,640px)/-2);border-radius:50%;background:radial-gradient(circle,#fffef2 0,#fff3c4 16%,#ffd878 32%,#ffac4e 50%,rgba(255,126,62,.6) 62%,rgba(255,96,60,0) 71%);will-change:transform,opacity}
+.sx-flash{inset:0;background:radial-gradient(circle at 50% 90%,#fff9e6 0,rgba(255,226,150,.9) 26%,rgba(255,170,80,.35) 56%,transparent 82%)}
+.sx-drips,.sx-motes{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:4}
+.sx-drips b{position:absolute;display:block;border-radius:50% 50% 50% 50%/16% 16% 84% 84%;background:linear-gradient(to bottom,rgba(170,240,255,0),rgba(190,248,255,.92) 62%,#fff);filter:drop-shadow(0 0 6px rgba(120,230,255,.8));opacity:0}
+.sx-motes{opacity:0;transition:opacity 1.2s}
+.sx-motes b{position:absolute;bottom:-12px;display:block;border-radius:50%;background:radial-gradient(circle,#fff7d8 0,rgba(255,206,110,.9) 40%,rgba(255,170,70,0) 72%);opacity:0}
+#s-end.warm{--n1:255,190,60;--n2:255,120,60;--n3:255,224,120;--n2l:255,160,110;--n3l:255,232,150;--hw:255,248,236;--lt:255,226,170;--pn:30,13,4;--ba:#150a04;--bb:#2b150a;--bc:#4d2610}
+#s-end.warm .r-scan{opacity:.2}
+#s-end.warm .term{background:rgba(30,12,3,.62)}
+#s-end.warm .btn,#s-end.warm .btn.ghost{background:rgba(30,12,3,.66);border-color:rgba(var(--n1),.7);color:rgb(var(--hw))}
+#s-end.warm .sx-sky{opacity:.92}#s-end.warm .sx-disc{opacity:1}#s-end.warm .sx-rays{opacity:.6}#s-end.warm .sx-motes{opacity:1}
+#s-end.rise .sx-sky{animation:sxSky 4.2s ease-out .2s both}
+#s-end.rise .sx-rays{animation:sxRays 3.2s ease-out 1.5s both,sxSpin 140s linear infinite}
+#s-end.rise .sx-disc{animation:sxRise 3.4s cubic-bezier(.22,.7,.2,1) .15s both,sxPulse 5.5s ease-in-out 3.6s infinite alternate}
+#s-end.rise .sx-flash{animation:sxFlash 1.5s ease-out 2.4s both}
+#s-end.rise .sx-drips b{animation:sxDrip var(--d) var(--t) cubic-bezier(.45,0,.95,.55) both}
+#s-end.rise .sx-motes b{animation:sxMote var(--d) var(--t) linear infinite}
+#s-end.rise.warm .estage{animation:sxLogo 1.8s ease-out both}
+@keyframes sxSky{from{opacity:0}to{opacity:.92}}
+@keyframes sxRise{from{transform:translateY(46vh) scale(.78);opacity:0}12%{opacity:1}to{transform:none;opacity:1}}
+@keyframes sxPulse{from{scale:1}to{scale:1.06}}
+@keyframes sxRays{from{opacity:0}to{opacity:.6}}
+@keyframes sxSpin{to{rotate:360deg}}
+@keyframes sxFlash{0%{opacity:0}38%{opacity:.96}100%{opacity:0}}
+@keyframes sxDrip{0%{transform:translateY(0);opacity:0}10%{opacity:.9}88%{opacity:.75}100%{transform:translateY(112vh);opacity:0}}
+@keyframes sxMote{0%{transform:translate(0,0);opacity:0}15%{opacity:.9}100%{transform:translate(var(--dx),-105vh);opacity:0}}
+@keyframes sxLogo{from{filter:drop-shadow(0 0 0 rgba(255,190,90,0))}to{filter:drop-shadow(0 0 20px rgba(255,190,90,.6))}}
+
 .estage{position:relative;width:min(54vw,220px);aspect-ratio:1;margin:28px auto 0}
 .estage .logo{position:absolute;left:0;top:0;width:100%}
 .estage .l-m{--logo:rgb(var(--n3));filter:drop-shadow(0 0 8px rgba(var(--n3),.85)) drop-shadow(0 0 30px rgba(var(--n1),.5));animation:bootin 1.5s steps(1) .2s both,flick 7s steps(1) 2s infinite}
@@ -746,6 +779,8 @@ body.ibig .screen.on>.wrap{animation:ibig .72s linear}
 <!-- 7. end -->
 <section class="screen res" id="s-end" data-screen="end" aria-label="마지막">
   <canvas class="r-fx" id="xFx" aria-hidden="true"></canvas>
+  <div class="sunfx" aria-hidden="true"><i class="sx-sky"></i><i class="sx-rays"></i><i class="sx-disc"></i><i class="sx-flash"></i></div>
+  <div class="sx-drips" id="sxDrips" aria-hidden="true"></div><div class="sx-motes" id="sxMotes" aria-hidden="true"></div>
   <div class="r-scan" aria-hidden="true"></div>
   <div class="wrap">
     <div class="r-head"><span class="r-chip ok">CONNECTED</span><h1 class="r-title xt">ICE BROKEN</h1><p class="r-sub">// SESSION.END</p></div>
@@ -1423,6 +1458,23 @@ function bindHold(hold,fire){
   hold.addEventListener('contextmenu',function(e){e.preventDefault()});
   hold.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();SND.decode();fire()}});
 }
+var SUN={t:0,stop:null};
+function sunStop(){
+  var sc=$('#s-end');clearTimeout(SUN.t);sc.classList.remove('rise','warm');
+  if(SUN.stop){SUN.stop();SUN.stop=null}
+  $('#sxDrips').innerHTML='';$('#sxMotes').innerHTML='';
+}
+function sunStart(){
+  sunStop();var sc=$('#s-end'),h='',i,r=Math.random;
+  for(i=0;i<9;i++){var len=50+r()*70;h+='<b style="left:'+(4+r()*92).toFixed(1)+'%;width:'+(5+r()*5).toFixed(1)+'px;height:'+len.toFixed(0)+'px;top:-'+(len+10).toFixed(0)+'px;--t:'+(1+r()*2.2).toFixed(2)+'s;--d:'+(1.5+r()*1.1).toFixed(2)+'s"></b>'}
+  $('#sxDrips').innerHTML=h;h='';
+  for(i=0;i<16;i++){var z=3+r()*4;h+='<b style="left:'+(3+r()*94).toFixed(1)+'%;width:'+z.toFixed(1)+'px;height:'+z.toFixed(1)+'px;--t:'+(3+r()*4).toFixed(2)+'s;--d:'+(5+r()*4).toFixed(2)+'s;--dx:'+((r()-.5)*70).toFixed(0)+'px"></b>'}
+  $('#sxMotes').innerHTML=h;
+  if(RM){sc.classList.add('rise','warm');rsPal('#s-end');return}
+  void sc.offsetWidth;sc.classList.add('rise');
+  SUN.stop=SND.sunrise();
+  SUN.t=setTimeout(function(){sc.classList.add('warm');rsPal('#s-end')},3000);
+}
 function endRender(){var sc=$('#s-end');if(complete())sc.setAttribute('data-g',groupOf(code()));else sc.removeAttribute('data-g');rsPal('#s-end')}
 function enMorph(el){
   if(RM){el.textContent='ENFOLD';return}
@@ -1488,23 +1540,47 @@ var SND=(function(){
   }
   function ok(){return on&&!!ctx()}
   /* filtered noise burst */
-  function noise(t,dur,type,f0,f1,q,g0,atk){
+  function noise(t,dur,type,f0,f1,q,g0,atk,out){
     var s=ac.createBufferSource();s.buffer=nb;s.loop=true;
     var f=ac.createBiquadFilter();f.type=type;f.Q.value=q||1;f.frequency.setValueAtTime(f0,t);
     if(f1&&f1!==f0)f.frequency.exponentialRampToValueAtTime(f1,t+dur);
     var g=ac.createGain();g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(g0,t+(atk||.004));g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-    s.connect(f);f.connect(g);g.connect(mg);s.start(t,Math.random()*1.5);s.stop(t+dur+.05);
+    s.connect(f);f.connect(g);g.connect(out||mg);s.start(t,Math.random()*1.5);s.stop(t+dur+.05);
   }
   /* oscillator blip (optional lowpass) */
-  function tone(t,type,f0,f1,dur,g0,atk,lp){
+  function tone(t,type,f0,f1,dur,g0,atk,lp,out){
     var o=ac.createOscillator();o.type=type;o.frequency.setValueAtTime(f0,t);
     if(f1&&f1!==f0)o.frequency.exponentialRampToValueAtTime(f1,t+dur);
     var g=ac.createGain();g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(g0,t+(atk||.003));g.gain.exponentialRampToValueAtTime(.0001,t+dur);
     if(lp){var f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=lp;o.connect(f);f.connect(g)}else o.connect(g);
-    g.connect(mg);o.start(t);o.stop(t+dur+.05);
+    g.connect(out||mg);o.start(t);o.stop(t+dur+.05);
+  }
+  /* 마지막 화면: 얼음이 녹으며 해가 떠오르는 따스한 연출음(약 6초, 정점 3초). 반환값: 중간에 끄는 함수 */
+  function sunrise(){
+    if(!ok())return null;
+    var t=ac.currentTime+.05,T=3.0,bus=ac.createGain();bus.gain.value=1;bus.connect(mg);
+    var sb=ac.createOscillator(),sg=ac.createGain();sb.type='sine';sb.frequency.setValueAtTime(46,t);sb.frequency.exponentialRampToValueAtTime(110,t+T);
+    sg.gain.setValueAtTime(.0001,t);sg.gain.exponentialRampToValueAtTime(.5,t+T);sg.gain.exponentialRampToValueAtTime(.0001,t+T+2.6);
+    sb.connect(sg);sg.connect(bus);sb.start(t);sb.stop(t+T+2.7);
+    [110,164.81,220,277.18,329.63,440].forEach(function(f,i){
+      [-7,7].forEach(function(dc){
+        var o=ac.createOscillator(),lp=ac.createBiquadFilter(),g=ac.createGain();
+        o.type='sawtooth';o.frequency.value=f;o.detune.value=dc;
+        lp.type='lowpass';lp.Q.value=.7;lp.frequency.setValueAtTime(260,t);lp.frequency.exponentialRampToValueAtTime(2600,t+T);lp.frequency.exponentialRampToValueAtTime(900,t+T+2.6);
+        g.gain.setValueAtTime(.0001,t);g.gain.setValueAtTime(.0001,t+i*.05);g.gain.exponentialRampToValueAtTime(.028,t+T);g.gain.exponentialRampToValueAtTime(.0001,t+T+2.8);
+        o.connect(lp);lp.connect(g);g.connect(bus);o.start(t);o.stop(t+T+2.9);
+      });
+    });
+    noise(t,T+.5,'bandpass',260,3800,.9,.45,T*.9,bus);
+    [.9,1.3,1.7,2.05,2.4,2.75].forEach(function(d){tone(t+d,'sine',2100+Math.random()*900,1100,.11,.2,.002,0,bus)});
+    [880,1108.7,1318.5,1760,2217.5,2637,3520,4186].forEach(function(f,i){var at=t+T-.05+i*.085;tone(at,'sine',f,f,.7,.15,.004,0,bus);tone(at,'triangle',f*2,f*2,.35,.04,.003,0,bus)});
+    [220,277.18,329.63,440,554.37].forEach(function(f){tone(t+T,'triangle',f,f,1.9,.15,.012,3000,bus)});
+    tone(t+T,'sine',90,36,.7,.75,.004,0,bus);noise(t+T,.5,'lowpass',2400,300,.7,.3,.005,bus);
+    return function(){try{var n=ac.currentTime;bus.gain.cancelScheduledValues(n);bus.gain.setValueAtTime(bus.gain.value,n);bus.gain.linearRampToValueAtTime(.0001,n+.25)}catch(e){}};
   }
   var api={
     isOn:function(){return on},
+    sunrise:sunrise,
     set:function(v){on=!!v;try{localStorage.setItem(KEY,on?'1':'0')}catch(e){}if(on){ctx();session()}else if(keep){try{keep.pause()}catch(e){}}},
     unlock:function(){if(on){ctx();session()}},
     /* single tap on the ice: pitch climbs as integrity drops */
@@ -2098,6 +2174,7 @@ function go(name,fromHash){
   if(name==='identity')renderIdentity();
   if(CYB[name]){rsStart(CYB[name]);if(name==='result')renderResult();else if(name==='unfold')uRender();else if(name==='enfold')enRender();else if(name==='reflect')rsPal('#s-reflect');else if(name==='end')endRender();else rsPal('#s-'+name)}else rsStop();
   if(name==='gifted'){renderGifted();var m=$('#gStack .circle.mine');if(m)setTimeout(function(){m.scrollIntoView({block:'center',behavior:'smooth'})},450)}
+  if(name==='end')sunStart();else sunStop();
   if(name==='game')GM.enter();else GM.leave();
   var i=ORDER.indexOf(name);
   updateDock();
