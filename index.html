@@ -418,18 +418,18 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 /* ---- 마지막 화면: 얼음이 녹아내리며 따스한 햇빛이 떠오르는 라이징 선 ---- */
 .sunfx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:1}
 .sunfx>*{position:absolute;display:block;opacity:0}
-.sx-sky{inset:0;background:radial-gradient(120% 78% at 50% 100%,rgba(255,228,152,.96) 0%,rgba(255,172,82,.72) 26%,rgba(255,106,80,.4) 50%,rgba(150,42,92,.16) 72%,transparent 92%),linear-gradient(to top,rgba(255,150,70,.42),rgba(255,112,100,.16) 55%,transparent 88%)}
-.sx-rays{left:50%;top:90%;width:210vmax;height:210vmax;margin:-105vmax 0 0 -105vmax;background:repeating-conic-gradient(from 0deg,rgba(255,226,150,.34) 0 2.6deg,transparent 2.6deg 8.4deg);-webkit-mask-image:radial-gradient(closest-side,#000 0,rgba(0,0,0,.7) 24%,transparent 74%);mask-image:radial-gradient(closest-side,#000 0,rgba(0,0,0,.7) 24%,transparent 74%);will-change:transform,opacity}
-.sx-disc{left:50%;top:90%;width:min(118vw,640px);aspect-ratio:1;margin:calc(min(118vw,640px)/-2) 0 0 calc(min(118vw,640px)/-2);border-radius:50%;background:radial-gradient(circle,#fffef2 0,#fff3c4 16%,#ffd878 32%,#ffac4e 50%,rgba(255,126,62,.6) 62%,rgba(255,96,60,0) 71%);will-change:transform,opacity}
-.sx-flash{inset:0;background:radial-gradient(circle at 50% 90%,#fff9e6 0,rgba(255,226,150,.9) 26%,rgba(255,170,80,.35) 56%,transparent 82%)}
+.sx-sky{inset:0;background:radial-gradient(120% 78% at 50% 100%,rgba(var(--hw),.95) 0%,rgba(var(--n3),.7) 26%,rgba(var(--n1),.42) 50%,rgba(var(--n2),.18) 72%,transparent 92%),linear-gradient(to top,rgba(var(--n1),.4),rgba(var(--n2),.16) 55%,transparent 88%)}
+.sx-rays{left:50%;top:90%;width:210vmax;height:210vmax;margin:-105vmax 0 0 -105vmax;background:repeating-conic-gradient(from 0deg,rgba(var(--lt),.34) 0 2.6deg,transparent 2.6deg 8.4deg);-webkit-mask-image:radial-gradient(closest-side,#000 0,rgba(0,0,0,.7) 24%,transparent 74%);mask-image:radial-gradient(closest-side,#000 0,rgba(0,0,0,.7) 24%,transparent 74%);will-change:transform,opacity}
+.sx-disc{left:50%;top:90%;width:min(118vw,640px);aspect-ratio:1;margin:calc(min(118vw,640px)/-2) 0 0 calc(min(118vw,640px)/-2);border-radius:50%;background:radial-gradient(circle,rgb(var(--hw)) 0,rgb(var(--hw)) 14%,rgb(var(--n3l)) 30%,rgb(var(--n1)) 50%,rgba(var(--n2),.6) 62%,rgba(var(--n2),0) 71%);will-change:transform,opacity}
+.sx-flash{inset:0;background:radial-gradient(circle at 50% 90%,rgb(var(--hw)) 0,rgba(var(--lt),.9) 26%,rgba(var(--n1),.35) 56%,transparent 82%)}
 .sx-drips,.sx-motes{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:4}
-.sx-drips b{position:absolute;display:block;border-radius:50% 50% 50% 50%/16% 16% 84% 84%;background:linear-gradient(to bottom,rgba(170,240,255,0),rgba(190,248,255,.92) 62%,#fff);filter:drop-shadow(0 0 6px rgba(120,230,255,.8));opacity:0}
+.sx-drips b{position:absolute;display:block;border-radius:50% 50% 50% 50%/16% 16% 84% 84%;background:linear-gradient(to bottom,rgba(var(--n3l),0),rgba(var(--n3l),.92) 62%,rgb(var(--hw)));filter:drop-shadow(0 0 6px rgba(var(--n1),.85));opacity:0}
 .sx-motes{opacity:0;transition:opacity 1.2s}
-.sx-motes b{position:absolute;bottom:-12px;display:block;border-radius:50%;background:radial-gradient(circle,#fff7d8 0,rgba(255,206,110,.9) 40%,rgba(255,170,70,0) 72%);opacity:0}
-#s-end.warm{--n1:255,190,60;--n2:255,120,60;--n3:255,224,120;--n2l:255,160,110;--n3l:255,232,150;--hw:255,248,236;--lt:255,226,170;--pn:30,13,4;--ba:#150a04;--bb:#2b150a;--bc:#4d2610}
+.sx-motes b{position:absolute;bottom:-12px;display:block;border-radius:50%;background:radial-gradient(circle,rgb(var(--hw)) 0,rgba(var(--n3),.9) 40%,rgba(var(--n1),0) 72%);opacity:0}
+/* 마지막 화면 색은 MBTI 그룹 팔레트(--n1…)를 그대로 사용 */
 #s-end.warm .r-scan{opacity:.2}
-#s-end.warm .term{background:rgba(30,12,3,.62)}
-#s-end.warm .btn,#s-end.warm .btn.ghost{background:rgba(30,12,3,.66);border-color:rgba(var(--n1),.7);color:rgb(var(--hw))}
+#s-end.warm .term{background:rgba(var(--pn),.62)}
+#s-end.rise .btn,#s-end.rise .btn.ghost{background:rgba(var(--pn),.66);border-color:rgba(var(--n1),.7);color:rgb(var(--hw))}
 #s-end.warm .sx-sky{opacity:.92}#s-end.warm .sx-disc{opacity:1}#s-end.warm .sx-rays{opacity:.6}#s-end.warm .sx-motes{opacity:1}
 #s-end.rise .sx-sky{animation:sxSky 4.2s ease-out .2s both}
 #s-end.rise .sx-rays{animation:sxRays 3.2s ease-out 1.5s both,sxSpin 140s linear infinite}
@@ -446,7 +446,7 @@ button:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--mint)
 @keyframes sxFlash{0%{opacity:0}38%{opacity:.96}100%{opacity:0}}
 @keyframes sxDrip{0%{transform:translateY(0);opacity:0}10%{opacity:.9}88%{opacity:.75}100%{transform:translateY(112vh);opacity:0}}
 @keyframes sxMote{0%{transform:translate(0,0);opacity:0}15%{opacity:.9}100%{transform:translate(var(--dx),-105vh);opacity:0}}
-@keyframes sxLogo{from{filter:drop-shadow(0 0 0 rgba(255,190,90,0))}to{filter:drop-shadow(0 0 20px rgba(255,190,90,.6))}}
+@keyframes sxLogo{from{filter:drop-shadow(0 0 0 rgba(var(--n1),0))}to{filter:drop-shadow(0 0 20px rgba(var(--n1),.6))}}
 
 .estage{position:relative;width:min(54vw,220px);aspect-ratio:1;margin:28px auto 0}
 .estage .logo{position:absolute;left:0;top:0;width:100%}
